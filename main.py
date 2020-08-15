@@ -266,10 +266,10 @@ def main():
             for key, val in dict_of_info.items():
                 database.loc[i, key] = val
 
-    database.to_excel("Edadil_database.xlsx", sheet_name='Sheet_name_1')
-    print(f"Database .xlsx created sucsessfully!")
-    database.to_csv('Edadil_database.csv', sep=',')
-    print(f"Database .csv created sucsessfully!")
+    #database.to_excel("Edadil_database.xlsx", sheet_name='Sheet_name_1')
+    #print(f"Database .xlsx created sucsessfully!")
+    #database.to_csv('Edadil_database.csv', sep=',')
+    #print(f"Database .csv created sucsessfully!")
     parser.create_databases(database, all_dict_of_info)
     sleep(0.3)
     parser.browser.close()
