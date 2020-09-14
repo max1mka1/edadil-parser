@@ -246,55 +246,45 @@ class EdadilParser():
 def main():
 
     parser = EdadilParser()
-    retailers_links = parser.parse_url_for_classname(url=parser.retailers_url, class_name=parser.retailer_classname)
-    # retailers_links = parser.parse_url_for_classname(url=retailers_url, class_name="p-index__retailer")
-    parser.save_list_to_txt(retailers_links, "retailers_links")
-    print(f'Количество магазинов = {len(retailers_links)}')
+    login = "tingaev"
+    password = "EngLisH2011!"
+    link = "https://backoffice.algoritmika.org/level-preview/38419?"
+    class_selector = "view-line"
+    login_id = "loginform-username"
+    password_id = "loginform-password"
+    remember_id = "loginform-rememberme"
+    parser.browser.get(link)
+    sleep(3)
+    login_element = parser.browser.find_element_by_id(login_id)
+    login_element.send_keys(login)
+    password_element = parser.browser.find_element_by_id(password_id)
+    password_element.send_keys(password)
+    remember_element = parser.browser.find_element_by_id(remember_id)
+    remember_element.click()
 
-    print(f"retailers_links = {retailers_links}")
-    all_goods_links, all_pages_links = [], []
-    counter = Count()
-    next(counter)
-    for retailer_link in retailers_links:
-        print(f"{next(counter)}) ", end='')
-        pages_links = parser.get_buttons_links(url=retailer_link, class_name=parser.buttons_classname)
-        for page_link in pages_links:
-            all_pages_links.append(page_link)
-    all_pages_count = len(all_pages_links)
-    print(f'Количество ссылок на все страницы всех магазинов = {all_pages_count}')
-    parser.save_list_to_txt(all_pages_links, "all_pages_links")
-    #counter2 = Count()
-    #next(counter)
-    for page_link in tqdm(all_pages_links):
-        goods_links_from_page_links = parser.parse_url_for_classname(url=page_link, class_name=parser.goods_offers)
-        # print(f"page_link = {page_link.split('/')[-1]}, {goods_links_from_page_links}")
-        for good_link in goods_links_from_page_links:
-            all_goods_links.append(good_link)
+    log_in = "btn" #  btn-lg btn-primary btn-block
+    log_in_element = parser.browser.find_element_by_class_name(log_in)
+    log_in_element.click()
+    sleep(10)
 
-    parser.database = pd.DataFrame(data=parser.data)
-    all_goods_links = [link for link in all_goods_links if (type(link) is not type(None))]
-    parser.all_goods_links_count = len(all_goods_links)
-    print(f'Количество ссылок на товары = {parser.all_goods_links_count}')
-    parser.save_list_to_txt(all_goods_links, "all_goods_links")
+    import codecs
+    file_name = "Page 1"
+    completeName = os.path.join(os.getcwd(), file_name)
+    file_object = codecs.open(completeName, "w", "utf-8")
+    html = parser.browser.page_source
+    file_object.write(html)
 
-    print('Извлекаем данные в список словарей и сохраняем полученные данные')
+    preview_title = "Preview__Title-w6cin5-5" # Preview__Title-w6cin5-5 cUbVqX
+    preview_title_element = parser.browser.find_element_by_class_name(preview_title)
+    print(preview_title_element.text)
+    preview_description = "iJApEu" # Preview__Description-w6cin5-6 iJApEu
+    preview_description_element = parser.browser.find_element_by_class_name(preview_title)
+    print(preview_description_element.text)
+    #links = [elem.get_attribute('href') for elem in elems]
+    #retailers_links = parser.parse_url_for_classname(url=link, class_name=class_selector)
+    #print(f' = {retailers_links}')
 
-    parser.counter = Count()
-    all_dict_of_info, times = [], []
-    for good_link in all_goods_links:
-        dict_of_info, end_time = parser.parse_link(good_link)
-        all_dict_of_info.append(dict_of_info)
-        times.append(end_time)
-
-    print(all_dict_of_info)
-    if all_dict_of_info:
-        print(f"Среднее время парсинга одной страницы: {sum(times) / len(all_dict_of_info)}")
-    #database.to_excel("Edadil_database.xlsx", sheet_name='Sheet_name_1')
-    #print(f"Database .xlsx created sucsessfully!")
-    #database.to_csv('Edadil_database.csv', sep=',')
-    #print(f"Database .csv created sucsessfully!")
-    parser.create_databases(parser.database, all_dict_of_info)
-
+    sleep(50)
     sleep(0.3)
     parser.browser.close()
     parser.browser.quit()
