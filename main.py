@@ -41,7 +41,7 @@ class EdadilParser():
         self.url = None
         self.chromedriver_path = './chromedriver_win32/chromedriver.exe'
         self.options = webdriver.ChromeOptions()
-        self.options.add_argument('--proxy-server=tg://socks?server=2a01:4f9:c010:7f53::1&port=1984&user=Maxinstellar&pass=english2011')
+        self.options.add_argument('--proxy-server=tg://socks?server=2a01:4f9:c010:7f53::1&port=1984&user=Maxinstellar&pass=YOURPASSWORD')
         # self.options.add_argument('headless')  # для открытия headless-браузера
         self.browser = webdriver.Chrome(executable_path=self.chromedriver_path, chrome_options=self.options)
         self.browser.implicitly_wait(0.3)  # seconds
